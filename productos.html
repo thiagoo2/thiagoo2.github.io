@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Sport Shop</title>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background: #006400;
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #cart {
+            position: relative;
+        }
+        #cart-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            color: #000;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+        }
+        .auth-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .auth-form input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .auth-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .auth-form button:hover {
+            background-color: #555;
+        }
+        main {
+            padding: 2rem;
+        }
+        #filter {
+            margin-bottom: 1rem;
+        }
+        #productos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .producto {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 5px;
+            background: #f9f9f9;
+            width: calc(33.333% - 2rem);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .producto img {
+            max-width: 100%;
+            height: auto;
+        }
+        .producto button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .producto button:hover {
+            background: #555;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sport Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="contactanos.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div id="cart">
+            <a href="#" onclick="toggleCart()">Carrito (0)</a>
+            <div id="cart-dropdown" style="display: none;">
+                <h2>Carrito de Compras</h2>
+                <div id="cart-items"></div>
+                <button onclick="clearCart()">Vaciar Carrito</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="filter">
+            <label for="sport-filter">Filtrar por deporte:</label>
+            <select id="sport-filter" onchange="filterProducts()">
+                <option value="all">Todos los productos</option>
+                <option value="futbol">Fútbol</option>
+                <option value="tenis">Tenis</option>
+                <option value="natacion">Natación</option>
+                <option value="boxeo">Boxeo</option>
+                <option value="baloncesto">Baloncesto</option>
+                <option value="softball">Softball</option>
+            </select>
+        </div>
+
+        <div id="productos">
+            <!-- Los productos se cargarán aquí usando JavaScript -->
+        </div>
+    </main>
+
+    <div class="auth-form" id="login-form" style="display: none;">
+        <h2>Iniciar sesión</h2>
+        <input type="text" id="login-username" placeholder="Nombre de usuario">
+        <input type="password" id="login-password" placeholder="Contraseña">
+        <button onclick="login()">Iniciar sesión</button>
+        <button onclick="showRegister()">Registrarse</button>
+    </div>
+
+    <div class="auth-form" id="register-form" style="display: none;">
+        <h2>Registrarse</h2>
+        <input type="text" id="register-username" placeholder="Nombre de usuario">
+        <input type="password" id="register-password" placeholder="Contraseña">
+        <button onclick="register()">Registrarse</button>
+        <button onclick="showLogin()">Iniciar sesión</button>
+    </div>
+
+    <div id="payment-form" style="display: none;">
+        <h3>Información de Pago</h3>
+        <label for="card-number">Número de Tarjeta:</label>
+        <input type="text" id="card-number" maxlength="16" placeholder="1234 5678 9101 1121">
+    
+        <label for="expiry-date">Fecha de Vencimiento:</label>
+        <input type="text" id="expiry-date" placeholder="MM/AA">
+    
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" maxlength="3" placeholder="123">
+    
+        <label for="client-name">Nombre del Cliente:</label>
+        <input type="text" id="client-name" placeholder="Nombre del Cliente">
+    
+        <label for="client-email">Email del Cliente:</label>
+        <input type="email" id="client-email" placeholder="email@ejemplo.com">
+    
+        <label for="client-address">Dirección:</label>
+        <input type="text" id="client-address" placeholder="Dirección Completa">
+    
+        <button onclick="processPayment()">Confirmar Compra</button>
+    </div>
+
+    <footer>
+        <p>© 2024 Sport Shop. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Datos de productos
+        const products = {
+            futbol: [
+                { name: 'Balón de Fútbol', price: '20€', image: 'https://via.placeholder.com/150' },
+                { name: 'Botas de Fútbol', price: '50€', image: 'https://via.placeholder.com/150' }
+            ],
+            tenis: [
+                { name: 'Raqueta de Tenis', price: '70€', image: 'https://via.placeholder.com/150' },
+                { name: 'Pelotas de Tenis', price: '15€', image: 'https://via.placeholder.com/150' }
+            ],
+            natacion: [
+                { name: 'Gafas de Natación', price: '25€', image: 'https://via.placeholder.com/150' },
+                { name: 'Traje de Baño', price: '40€', image: 'https://via.placeholder.com/150' }
+            ],
+            boxeo: [
+                { name: 'Guantes de Boxeo', price: '45€', image: 'https://via.placeholder.com/150' },
+                { name: 'Saco de Boxeo', price: '80€', image: 'https://via.placeholder.com/150' }
+            ],
+            baloncesto: [
+                { name: 'Balón de Baloncesto', price: '25€', image: 'https://via.placeholder.com/150' },
+                { name: 'Zapatillas de Baloncesto', price: '60€', image: 'https://via.placeholder.com/150' }
+            ],
+            softball: [
+                { name: 'Guantes de Softball', price: '30€', image: 'https://via.placeholder.com/150' },
+                { name: 'Bate de Softball', price: '55€', image: 'https://via.placeholder.com/150' }
+            ]
+        };
+
+        // Estado del carrito
+        let cart = [];
+
+        // Cargar productos al iniciar
+        function loadProducts() {
+            const productosDiv = document.getElementById('productos');
+            productosDiv.innerHTML = ''; // Limpiar productos existentes
+
+            // Mostrar todos los productos por defecto
+            Object.values(products).flat().forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'producto';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.price}</p>
+                    <button onclick="addToCart('${product.name}', '${product.price}')">Añadir al carrito</button>
+                `;
+                productosDiv.appendChild(productDiv);
+            });
+        }
+
+        // Filtrar productos por deporte
+        function filterProducts() {
+            const filter = document.getElementById('sport-filter').value;
+            const productosDiv = document.getElementById('productos');
+            productosDiv.innerHTML = ''; // Limpiar productos existentes
+
+            if (filter === 'all') {
+                loadProducts();
+            } else {
+                products[filter].forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'producto';
+                    productDiv.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>${product.price}</p>
+                        <button onclick="addToCart('${product.name}', '${product.price}')">Añadir al carrito</button>
+                    `;
+                    productosDiv.appendChild(productDiv);
+                });
+            }
+        }
+
+        // Añadir al carrito
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+        }
+
+        // Actualizar el contenido del carrito
+        function updateCart() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            cartItemsDiv.innerHTML = ''; // Limpiar carrito existente
+
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.textContent = `${item.name} - ${item.price}`;
+                cartItemsDiv.appendChild(itemDiv);
+            });
+
+            document.querySelector('#cart a').textContent = `Carrito (${cart.length})`;
+        }
+
+        // Vaciar carrito
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        // Mostrar/Ocultar carrito
+        function toggleCart() {
+            const cartDropdown = document.getElementById('cart-dropdown');
+            if (cartDropdown.style.display === 'none') {
+                cartDropdown.style.display = 'block';
+            } else {
+                cartDropdown.style.display = 'none';
+            }
+        }
+
+        // Funciones de autenticación (placeholder)
+        function login() {
+            alert('Iniciar sesión');
+        }
+
+        function register() {
+            alert('Registrarse');
+        }
+
+        function showLogin() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+
+        function processPayment() {
+            alert('Procesando pago');
+        }
+
+        // Inicializar productos al cargar la página
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+function loadProducts() {
+    const products = [
+        { name: 'Balón de Fútbol', price: 25, category: 'futbol', image: 'https://th.bing.com/th/id/OIP.gsP0lCclklXwtovliu8x2gHaHR?rs=1&pid=ImgDetMain' },
+        { name: 'Camiseta de Fútbol', price: 75, category: 'futbol', image: 'https://www.kandiny.cl/images/webp/Europe/EUBH001_1.webp' },
+        { name: 'Raqueta de Tenis', price: 50, category: 'tenis', image: 'https://th.bing.com/th/id/OIP.4wvNrT1EEi3dE6jjrCwNggAAAA?rs=1&pid=ImgDetMain' },
+        { name: 'Pelota de Tenis', price: 10, category: 'tenis', image: 'https://contents.mediadecathlon.com/p152665/k$0f4b43adaff6a83bae78b7459746fe3c/jumbo-tennis-ball-yellow.jpg?&f=800x800' },
+        { name: 'Gafas de Natación', price: 20, category: 'natacion', image: 'https://s.libertaddigital.com/2022/06/23/gafas-de-natacion-aqtivaqua-dx.jpg' },
+        { name: 'Traje de Baño', price: 40, category: 'natacion', image: 'https://contents.mediadecathlon.com/p1789834/k$a366848c8ef5dc27186f38838b90b9f0/sq/Traje+Nataci+n+Mar+Abierto+OWS+Hombre+Neopreno+2+2+mm.jpg' },
+        { name: 'Guantes de Boxeo', price: 60, category: 'boxeo', image: 'https://th.bing.com/th/id/R.9b9cacaced09077a3c1096ec760e1992?rik=Bzja5v5yMt9pXQ&pid=ImgRaw&r=0' },
+        { name: 'Saco de Boxeo', price: 120, category: 'boxeo', image: 'https://carulla.vtexassets.com/arquivos/ids/298603/saco-de-boxeo-everlast-sh4006wb-60-lbs-13-pulg-x34-pulg-negro.jpg?v=637104367250570000' },
+        { name: 'Balón de Baloncesto', price: 30, category: 'baloncesto', image: 'https://contents.mediadecathlon.com/p298557/k$74a7f525136224fac43390162df7b775/sq/Bal+n+de+baloncesto+SPALDING+NBA+ALL+STAR+talla+7.jpg' },
+        { name: 'Zapatillas de Baloncesto', price: 85, category: 'baloncesto', image: 'https://th.bing.com/th/id/OIP.-v922-ELvugjYEGlR-5tygAAAA?rs=1&pid=ImgDetMain' },
+        { name: 'Guantes de Softball', price: 35, category: 'softball', image: 'https://th.bing.com/th/id/OIP.L8GWjnxXxesKUxMRYH2hswHaHa?rs=1&pid=ImgDetMain' },
+        { name: 'Bate de Softball', price: 70, category: 'softball', image: 'https://images-na.ssl-images-amazon.com/images/I/71JdkYHLY3L._AC_SL1500_.jpg' }
+    ];
+
+    const productContainer = document.getElementById('productos');
+    productContainer.innerHTML = ''; // Limpiar productos existentes
+
+    products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.dataset.category = product.category; / 	/ Añadir categoría para el filtrado
+        productDiv.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>$${product.price}</p>
+            <button onclick="addToCart('${product.name}', ${product.price})">Agregar al Carrito</button>
+        `;
+        productContainer.appendChild(productDiv);
+    });
+}
